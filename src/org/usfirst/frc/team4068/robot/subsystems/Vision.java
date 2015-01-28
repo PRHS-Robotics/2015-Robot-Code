@@ -1,8 +1,9 @@
 package org.usfirst.frc.team4068.robot.subsystems;
 
 import java.nio.ByteBuffer;
+import java.util.Comparator;
 
-import org.usfirst.frc.team4068.robot.Robot.Scores;
+import org.usfirst.frc.team4068.robot.Robot.ParticleReport;
 
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
@@ -10,10 +11,12 @@ import com.ni.vision.NIVision.ImageType;
 import com.ni.vision.NIVision.ParticleFilterCriteria2;
 import com.ni.vision.NIVision.MeasurementType;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.image.BinaryImage;
 import edu.wpi.first.wpilibj.image.ColorImage;
 import edu.wpi.first.wpilibj.image.NIVisionException;
 import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.vision.AxisCamera;
 
 public class Vision extends AxisCamera{
@@ -25,6 +28,25 @@ public class Vision extends AxisCamera{
 	/*AxisCamera camera = new AxisCamera("10.40.68.11");
 	
 	Image frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);*/
+	
+	public class ParticleReport implements Comparator<ParticleReport>, Comparable<ParticleReport>{
+		double PercentAreaToImageArea;
+		double Area;
+		double BoundingRectLeft;
+		double BoundingRectTop;
+		double BoundingRectRight;
+		double BoundingRectBottom;
+		
+		public int compareTo(ParticleReport r)
+		{
+			return (int)(r.Area - this.Area);
+		}
+		
+		public int compare(ParticleReport r1, ParticleReport r2)
+		{
+			return (int)(r1.Area - r2.Area);
+		}
+	};
 	
 	public class Scores {
 		double Area;
@@ -38,7 +60,7 @@ public class Vision extends AxisCamera{
 	double LONG_RATIO = 2.22; //Tote long side = 26.9 / Tote height = 12.1 = 2.22
 	double SHORT_RATIO = 1.4; //Tote short side = 16.9 / Tote height = 12.1 = 1.4
 	double SCORE_MIN = 75.0;  //Minimum score to be considered a tote
-	double VIEW_ANGLE = 49.4; //View angle fo camera, set to Axis m1011 by default, 64 for m1013, 51.7 for 206, 52 for HD3000 square, 60 for HD3000 640x480
+	double VIEW_ANGLE = 49.4; //View angle for camera, set to Axis m1011 by default, 64 for m1013, 51.7 for 206, 52 for HD3000 square, 60 for HD3000 640x480
 	NIVision.ParticleFilterCriteria2 criteria[] = new NIVision.ParticleFilterCriteria2[1];
 	NIVision.ParticleFilterOptions2 filterOptions = new NIVision.ParticleFilterOptions2(0,0,1,1);
 	Scores scores = new Scores();
@@ -46,11 +68,23 @@ public class Vision extends AxisCamera{
 	Image frame;
 	Image binaryFrame;
 	
-	public void imageRetrieval() {
+	public void thisStuff() {
 		frame = NIVision.imaqCreateImage(ImageType.IMAGE_RGB, 0);
 		binaryFrame = NIVision.imaqCreateImage(ImageType.IMAGE_U8, 0);
 		criteria[0] = new NIVision.ParticleFilterCriteria2(NIVision.MeasurementType.MT_AREA_BY_IMAGE_AREA, AREA_MINIMUM, 100.0, 0, 0);
-
+		
+		SmartDashboard.putNumber("Tote hue min", TOTE_HUE_RANGE.minValue); //I think these are supposed to get referenced later?
+		SmartDashboard.putNumber("Tote hue max", TOTE_HUE_RANGE.maxValue);
+		SmartDashboard.putNumber("Tote sat min", TOTE_SAT_RANGE.minValue);
+		SmartDashboard.putNumber("Tote sat max", TOTE_SAT_RANGE.maxValue);
+		SmartDashboard.putNumber("Tote val min", TOTE_VAL_RANGE.minValue);
+		SmartDashboard.putNumber("Tote val max", TOTE_VAL_RANGE.maxValue);
+		SmartDashboard.putNumber("Area min %", AREA_MINIMUM);
+	}
+	
+	
+	public boolean imageRetrieval() {
+		
 		ColorImage image = null;
 		BinaryImage thresholdImage = null;
 		BinaryImage bigObjectsImage = null;
@@ -72,6 +106,8 @@ public class Vision extends AxisCamera{
 			
 		}
 		
+		CameraServer.getInstance().setImage(image.image);
+		/*
 		try {
 			filteredImage.free();
 			convexHullImage.free();
@@ -83,12 +119,12 @@ public class Vision extends AxisCamera{
 		} finally {
 			
 		}
-		
-		/*if(filteredImage != null) {
+		*/
+		if(filteredImage != null) {
 			return true;
 		} else {
 			return false;
-		}*/
+		}
 	}
 	
 	public boolean isToteInView() {
