@@ -4,8 +4,8 @@ package org.usfirst.frc.team4068.robot.subsystems;
 import java.util.Comparator;
 import java.util.Vector;
 
-import org.usfirst.frc.team4068.robot.Robot.ParticleReport;
-import org.usfirst.frc.team4068.robot.Robot.Scores;
+//import org.usfirst.frc.team4068.robot.Robot.ParticleReport;
+//import org.usfirst.frc.team4068.robot.Robot.Scores;
 
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
@@ -93,7 +93,7 @@ public class Vision extends AxisCamera{
 	public void autonomous() {		
 		//read file in from disk. For this example to run you need to copy image.jpg from the SampleImages folder to the
 		//directory shown below using FTP or SFTP: http://wpilib.screenstepslive.com/s/4485/m/24166/l/282299-roborio-ftp
-		NIVision.imaqReadFile(frame, "/home/lvuser/SampleImages/image.jpg");
+		this.getImage(frame);
 		//frame = this.getImage();
 		
 		//Update threshold values from SmartDashboard. For performance reasons it is recommended to remove this after calibration is finished.
@@ -161,9 +161,7 @@ public class Vision extends AxisCamera{
 	
 	
 	public void operatorControl() {
-		while(isOperatorControl() && isEnabled()) {
 			Timer.delay(0.005);				// wait for a motor update time
-		}
 	}
 	
 	//Comparator function for sorting particles. Returns true if particle 1 is larger
