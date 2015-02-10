@@ -18,24 +18,24 @@ public class Vision_0 extends AxisCamera{
 	}
 	
 	Image frame;
+	Image thresholdImage;
+	
+	NIVision.Range TOTE_RED_RANGE = new NIVision.Range(0, 15);
+	NIVision.Range TOTE_GREEN_RANGE = new NIVision.Range(31, 255);
+	NIVision.Range TOTE_HUE_RANGE = new NIVision.Range(0, 15);
 	
 	public void hi(){
 		frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
+		thresholdImage = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
 	}
 	
 	public void something(){
-		BinaryImage thresholdImage;
 		
-		try {
-			this.getImage(frame);
-			NIVision.imaqColorThreshold(thresholdImage, frame, 255, ColorMode.RGB, 0-15, 31-255, 0-15);
-			//thresholdImage = frame.thresholdHSL(0, 255, 0, 255, 0, 255);
-			thresholdImage.write("/tmp/threshold.jpg");
-			thresholdImage.free();
-
-			} catch (NIVisionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		this.getImage(frame);
+		
+		NIVision.imaqColorThreshold(thresholdImage, frame, 255, ColorMode.RGB, TOTE_RED_RANGE, TOTE_GREEN_RANGE, TOTE_HUE_RANGE);
+		//thresholdImage = frame.thresholdHSL(0, 255, 0, 255, 0, 255);
+		//thresholdImage.write("/tmp/threshold.jpg");
+		thresholdImage.free();
 	}
 }

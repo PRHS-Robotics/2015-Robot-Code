@@ -4,8 +4,8 @@ package org.usfirst.frc.team4068.robot.subsystems;
 import java.util.Comparator;
 import java.util.Vector;
 
-//import org.usfirst.frc.team4068.robot.Robot.ParticleReport;
-//import org.usfirst.frc.team4068.robot.Robot.Scores;
+import org.usfirst.frc.team4068.robot.Robot.ParticleReport;
+import org.usfirst.frc.team4068.robot.Robot.Scores;
 
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
@@ -94,7 +94,6 @@ public class Vision extends AxisCamera{
 		//read file in from disk. For this example to run you need to copy image.jpg from the SampleImages folder to the
 		//directory shown below using FTP or SFTP: http://wpilib.screenstepslive.com/s/4485/m/24166/l/282299-roborio-ftp
 		this.getImage(frame);
-		//frame = this.getImage();
 		
 		//Update threshold values from SmartDashboard. For performance reasons it is recommended to remove this after calibration is finished.
 		TOTE_HUE_RANGE.minValue = (int)SmartDashboard.getNumber("Tote hue min", TOTE_HUE_RANGE.minValue);
