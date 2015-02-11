@@ -3,6 +3,7 @@ package org.usfirst.frc.team4068.robot.subsystems;
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.ColorMode;
 import com.ni.vision.NIVision.Image;
+import com.ni.vision.NIVision.ParticleFilterCriteria2;
 
 import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.Timer;
