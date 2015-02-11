@@ -47,7 +47,7 @@ public class Vision_0 extends AxisCamera{
 		
 		//int numParticles = NIVision.imaqCountParticles(thresholdImage, 1);
 		//SmartDashboard.putNumber("Masked particles", numParticles);
-		NIVision.imaqWriteFile(thresholdImage, "/test.jpg", shit);
+		NIVision.imaqWriteFile(thresholdImage, "/home/lvuser/test.jpg", shit);
 		thresholdImage.free();
 	}
 }
