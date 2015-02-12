@@ -7,7 +7,11 @@ import com.ni.vision.NIVision.ParticleFilterCriteria2;
 import com.ni.vision.NIVision.MeasurementType;
 import com.ni.vision.NIVision.ImageType;
 import com.ni.vision.NIVision.RGBValue;
+import com.ni.vision.NIVision.RawData;
+import com.ni.vision.NIVision.Rect;
+import com.ni.vision.VisionException;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.image.BinaryImage;
@@ -42,12 +46,30 @@ public class Vision_0 extends AxisCamera{
 	public void something(){
 		
 		this.getImage(frame);
+		this.getImage(thresholdImage);
 		
-		NIVision.imaqColorThreshold(thresholdImage, frame, 255, ColorMode.RGB, TOTE_RED_RANGE, TOTE_GREEN_RANGE, TOTE_HUE_RANGE);
+		NIVision.imaqDrawShapeOnImage(thresholdImage, frame, new Rect(180, 30, 200, 300), NIVision.DrawMode.DRAW_INVERT, shape, newPixelValue);
+		
+		try{
+		    NIVision.imaqColorThreshold(thresholdImage, frame, 255, ColorMode.RGB, TOTE_RED_RANGE, TOTE_GREEN_RANGE, TOTE_HUE_RANGE);
+		}catch(VisionException e){
+		    System.out.println("Vision Error:");
+		    System.out.println(e);
+		}
+		
+		CameraServer.getInstance().setImage(thresholdImage);
+		
+		try{
+		    NIVision.imaqWriteJPEGFile(thresholdImage, "/home/lvuser/test.jpg", 100, new RawData());
+		}catch(VisionException e){
+		    System.out.println("Vision Error Writing to file:");
+                    System.out.println(e);
+		}
+		//NIVision.imaqColorThreshold(thresholdImage, frame, 255, ColorMode.RGB, TOTE_RED_RANGE, TOTE_GREEN_RANGE, TOTE_HUE_RANGE);
 		
 		//int numParticles = NIVision.imaqCountParticles(thresholdImage, 1);
 		//SmartDashboard.putNumber("Masked particles", numParticles);
-		NIVision.imaqWriteFile(thresholdImage, "/home/lvuser/test.jpg", shit);
-		thresholdImage.free();
+		//NIVision.imaqWriteFile(thresholdImage, "/home/lvuser/test.jpg", shit);
+		//thresholdImage.free();
 	}
 }

@@ -4,8 +4,8 @@ package org.usfirst.frc.team4068.robot.subsystems;
 import java.util.Comparator;
 import java.util.Vector;
 
-import org.usfirst.frc.team4068.robot.Robot.ParticleReport;
-import org.usfirst.frc.team4068.robot.Robot.Scores;
+//import org.usfirst.frc.team4068.robot.Robot.ParticleReport;
+//import org.usfirst.frc.team4068.robot.Robot.Scores;
 
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;

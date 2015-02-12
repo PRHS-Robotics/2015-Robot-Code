@@ -5,6 +5,7 @@ import org.usfirst.frc.team4068.robot.code.Autonomous;
 import org.usfirst.frc.team4068.robot.code.Teleop;
 import org.usfirst.frc.team4068.robot.code.Test;
 import org.usfirst.frc.team4068.robot.lib.References;
+import org.usfirst.frc.team4068.robot.subsystems.Vision_0;
 
 import edu.wpi.first.wpilibj.Compressor;
 //import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -13,6 +14,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Scheduler;
 //import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -62,13 +64,20 @@ public class Robot extends IterativeRobot {
         //SmartDashboard.putData("Run Autonomous Thread 1?", autoThread1);
         //SmartDashboard.putData("Run Autonomous Thread 2?", autoThread2);
         //SmartDashboard.putData("Run Autonomous Thread 3?", autoThread3);
+        
+        vision.hi();
     }
 
     /**
      * Autonomous section -- Runs for 15 seconds
      */
     
+    Vision_0 vision = new Vision_0("10.40.68.11");
+    
+    Victor lights = new Victor(5);
+    
     public void autonomousPeriodic() {
+        /*
         auto1 = new Autonomous("thread1"); //Initialize thread
         Timer time = new Timer();
         time.start();
@@ -81,6 +90,10 @@ public class Robot extends IterativeRobot {
         time.stop();
         System.out.printf("Autonomous Disabled, ran for: %n", time.get());
         auto1 = null;
+        */
+        lights.set(.5);
+        
+        vision.something();
     }
 
     /**
